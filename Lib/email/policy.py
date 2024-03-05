@@ -143,8 +143,9 @@ class EmailPolicy(Policy):
         if isinstance(value, str) and len(value.splitlines())>1:
             # XXX this error message isn't quite right when we use splitlines
             # (see issue 22233), but I'm not sure what should happen here.
-            raise ValueError("Header values may not contain linefeed "
-                             "or carriage return characters")
+            value = value.replace("\\r\\n", " ")
+            #raise ValueError("Header values may not contain linefeed "
+            #                 "or carriage return characters")
         return (name, self.header_factory(name, value))
 
     def header_fetch_parse(self, name, value):
